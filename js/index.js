@@ -1,0 +1,17 @@
+	angular.module("myApp",[]).
+controller("bookManage",function($scope,$http){
+	$scope.data=[];
+	$http.get("php/info.php").
+	success(function(res){
+	  $scope.data=res.data;
+	});
+	 $scope.delBooks=function(index,bookId){
+	   $scope.data.splice(index,1);
+	   $http.get("php/delete.php?bookId="+bookId).
+	   success(function(data){
+		   if(data.status==1){
+			   alert(data.message);
+			   }
+		  });
+   };
+});
