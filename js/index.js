@@ -1,17 +1,75 @@
 	angular.module("myApp",[]).
 controller("bookManage",function($scope,$http){
+    $scope.showBooks=false;
+    $scope.editEnable=false;
+    $scope.showzz=false;
 	$scope.data=[];
-	$http.get("php/info.php").
+	$http.get("info.php").
 	success(function(res){
 	  $scope.data=res.data;
 	});
 	 $scope.delBooks=function(index,bookId){
-	   $scope.data.splice(index,1);
-	   $http.get("php/delete.php?bookId="+bookId).
+	 	if(confirm("确定删除这条记录？")){
+	   $http.get("delete.php?bookId="+bookId).
 	   success(function(data){
 		   if(data.status==1){
-			   alert(data.message);
+		alert(data.message);
+	   $scope.data.splice(index,1);
 			   }
-		  });
+		  });}
    };
-});
+  $scope.editBooks=function(index){
+        $scope.modIndex=index;
+        var book=$scope.data[index];
+        $scope.bookIdNew=book.bookId;
+        $scope.bookNameNew=book.bookName;
+        $scope.bookOriNew=book.bookOri;
+        $scope.bookPriceNew=book.bookPrice;
+        $scope.bookPubNew=book.bookPub;
+        $scope.showBooks=true;
+    	$scope.showzz=true;
+      };
+      $scope.chan=function(){
+    $scope.showBooks=false;
+    $scope.showzz=false;
+    $scope.editEnable=false;
+      }
+      $scope.confirms=function(bookIdNew,bookNameNew,bookOriNew,bookPriceNew,bookPubNew){
+        $http.post("updatebook.php",{bookId:bookIdNew,bookName:bookNameNew,bookOri:bookOriNew,bookPrice:bookPriceNew,bookPub:bookPubNew})
+        .success(function(data){
+          if(data.status==1){
+            $scope.data[$scope.modIndex].bookName=bookNameNew;
+            $scope.data[$scope.modIndex].bookOri=bookOriNew;
+            $scope.data[$scope.modIndex].bookPrice=bookPriceNew;
+            $scope.data[$scope.modIndex].bookPub=bookPubNew;
+            $scope.showBooks=false;
+          }
+        });
+
+
+}
+        $scope.insertBook=function(){
+        $scope.editEnable=true;
+    	$scope.showzz=true;
+ }
+        $scope.addBooks=function(){
+        $http.post("addbook.php",{
+        bookName:$scope.bookNameAdd,bookOri:$scope.bookOriAdd,
+         bookPrice:$scope.bookPriceAdd,bookPub:$scope.bookPubAdd,
+    })
+       .success(function(res){
+       if(res.status==1){
+       $scope.editEnable=false;
+       $scope.showzz=false;
+  $http.get("info.php").
+  success(function(res){
+    $scope.data=res.data;
+  });
+       $scope.bookNameAdd="";
+       $scope.bookOriAdd="";
+       $scope.bookPriceAdd="";
+    $scope.bookPubAdd="";
+        }
+    })
+        }
+})

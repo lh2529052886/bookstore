@@ -7,7 +7,7 @@ $bookOri=$books['bookOri'];
 $bookPrice=$books['bookPrice'];
 $bookPub=$books['bookPub'];
 include("conn.php");
-$num=mysql_query("insert into books(bookName,bookOri,bookPrice,bookPub,bookAddTime) values('$bookName','$bookOri','$bookPrice','$bookPub',now())");
+$num=mysql_query("insert into mybooks(bookName,bookOri,bookPrice,bookPub,bookAddTime) values('$bookName','$bookOri','$bookPrice','$bookPub',now())");
 if($num>0){
 	echo '{"status":1,"message":"添加成功"}';
 	}else{

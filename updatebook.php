@@ -8,7 +8,7 @@ $bookOri=$books['bookOri'];
 $bookPrice=$books['bookPrice'];
 $bookPub=$books['bookPub'];
 include("conn.php");
-$num=mysql_query("update books set bookName='$bookName',bookOri='$bookOri',bookPrice='$bookPrice',bookPub='$bookPub' where bookId='$bookId' ");
+$num=mysql_query("update mybooks set bookName='$bookName',bookOri='$bookOri',bookPrice='$bookPrice',bookPub='$bookPub' where bookId='$bookId' ");
 if($num>0){
 	echo '{"status":1,"message":"更新成功"}';
 	}else{
